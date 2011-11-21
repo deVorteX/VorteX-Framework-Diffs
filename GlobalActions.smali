@@ -554,7 +554,7 @@
 
     const/4 v11, 0x0
 
-    const/4 v10, 0x4
+    const/4 v10, 0x6
 
     const/4 v9, 0x1
 
@@ -599,7 +599,7 @@
     .line 231
     iget-boolean v0, p0, Lcom/android/internal/policy/impl/GlobalActions;->isDeepSleepSupported:Z
 
-    if-eqz v0, :cond_a3
+    if-eqz v0, :cond_bf
 
     .line 232
     new-array v0, v10, [Lcom/android/internal/policy/impl/GlobalActions$Action;
@@ -634,6 +634,30 @@
 
     aput-object v1, v0, v13
 
+    const/4 v13, 0x4
+
+    new-instance v1, Lcom/android/internal/policy/impl/GlobalActions$10;
+
+    const v2, 0x108044a
+
+    const v3, 0x10404d6
+
+    invoke-direct {v1, p0, v2, v3}, Lcom/android/internal/policy/impl/GlobalActions$10;-><init>(Lcom/android/internal/policy/impl/GlobalActions;II)V
+
+    aput-object v1, v0, v13
+
+    const/4 v13, 0x5
+
+    new-instance v1, Lcom/android/internal/policy/impl/GlobalActions$11;
+
+    const v2, 0x108044b
+
+    const v3, 0x10404d7
+
+    invoke-direct {v1, p0, v2, v3}, Lcom/android/internal/policy/impl/GlobalActions$11;-><init>(Lcom/android/internal/policy/impl/GlobalActions;II)V
+
+    aput-object v1, v0, v13
+
     invoke-static {v0}, Lcom/google/android/collect/Lists;->newArrayList([Ljava/lang/Object;)Ljava/util/ArrayList;
 
     move-result-object v0
@@ -641,7 +665,7 @@
     iput-object v0, p0, Lcom/android/internal/policy/impl/GlobalActions;->mItems:Ljava/util/ArrayList;
 
     .line 316
-    :goto_64
+    :goto_80
     new-instance v0, Lcom/android/internal/policy/impl/GlobalActions$MyAdapter;
 
     const/4 v1, 0x0
@@ -695,7 +719,7 @@
 
     move-result v0
 
-    if-nez v0, :cond_9f
+    if-nez v0, :cond_bb
 
     .line 327
     invoke-virtual {v8}, Landroid/app/AlertDialog;->getWindow()Landroid/view/Window;
@@ -705,7 +729,7 @@
     invoke-virtual {v0, v10, v10}, Landroid/view/Window;->setFlags(II)V
 
     .line 331
-    :cond_9f
+    :cond_bb
     invoke-virtual {v8, p0}, Landroid/app/AlertDialog;->setOnDismissListener(Landroid/content/DialogInterface$OnDismissListener;)V
 
     .line 333
@@ -714,7 +738,7 @@
     .line 286
     .end local v7           #ab:Landroid/app/AlertDialog$Builder;
     .end local v8           #dialog:Landroid/app/AlertDialog;
-    :cond_a3
+    :cond_bf
     new-array v0, v13, [Lcom/android/internal/policy/impl/GlobalActions$Action;
 
     iget-object v1, p0, Lcom/android/internal/policy/impl/GlobalActions;->mSilentModeToggle:Lcom/android/internal/policy/impl/GlobalActions$ToggleAction;
@@ -741,7 +765,7 @@
 
     iput-object v0, p0, Lcom/android/internal/policy/impl/GlobalActions;->mItems:Ljava/util/ArrayList;
 
-    goto :goto_64
+    goto :goto_80
 .end method
 
 .method private prepareDialog()V

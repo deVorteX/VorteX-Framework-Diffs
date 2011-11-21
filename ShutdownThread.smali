@@ -21,6 +21,8 @@
 
 .field private static final TAG:Ljava/lang/String; = "ShutdownThread"
 
+.field public static mReboot:I
+
 .field private static mReboot:Z
 
 .field private static mRebootReason:Ljava/lang/String;
@@ -491,7 +493,7 @@
 
     .line 478
     :cond_f
-    if-eqz p0, :cond_44
+    if-eqz p0, :cond_76
 
     .line 479
     const-string v2, "ShutdownThread"
@@ -520,13 +522,13 @@
     :try_start_29
     invoke-static {p1}, Landroid/os/Power;->reboot(Ljava/lang/String;)V
     :try_end_2c
-    .catch Ljava/lang/Exception; {:try_start_29 .. :try_end_2c} :catch_3b
+    .catch Ljava/lang/Exception; {:try_start_29 .. :try_end_2c} :catch_6d
 
     .line 504
     :goto_2c
     sget-boolean v2, Lcom/android/internal/app/ShutdownThread;->DEBUG_KPI:Z
 
-    if-eqz v2, :cond_5f
+    if-eqz v2, :cond_91
 
     .line 505
     const-string v2, "KPI-SHUTDOWN-8"
@@ -537,13 +539,71 @@
 
     .line 511
     :goto_37
+    sget v1, Lcom/android/internal/app/ShutdownThread;->mReboot:I
+
+    const/4 v2, 0x1
+
+    if-eq v1, v2, :cond_42
+
+    const/4 v2, 0x2
+
+    if-eq v1, v2, :cond_48
+
     invoke-static {}, Landroid/os/Power;->shutdown()V
+
+    :cond_42
+    const-string v4, "now"
+
+    invoke-static {v4}, Landroid/os/Power;->reboot(Ljava/lang/String;)V
+
+    return-void
+
+    :cond_48
+    const-string v4, "now"
+
+    const/4 v2, 0x3
+
+    new-array v0, v2, [Ljava/lang/String;
+
+    const/4 v2, 0x0
+
+    const-string/jumbo v3, "su"
+
+    aput-object v3, v0, v2
+
+    const/4 v2, 0x1
+
+    const-string v3, "-c"
+
+    aput-object v3, v0, v2
+
+    const/4 v2, 0x2
+
+    const-string v1, "echo 1 > /data/.recovery_mode ; "
+
+    aput-object v1, v0, v2
+
+    .local v0, args:[Ljava/lang/String;
+    invoke-static {}, Ljava/lang/Runtime;->getRuntime()Ljava/lang/Runtime;
+
+    move-result-object v2
+
+    invoke-virtual {v2, v0}, Ljava/lang/Runtime;->exec([Ljava/lang/String;)Ljava/lang/Process;
+
+    move-result-object v1
+
+    .local v1, proc:Ljava/lang/Process;
+    invoke-virtual {v1}, Ljava/lang/Process;->waitFor()I
+
+    invoke-static {v4}, Landroid/os/Power;->reboot(Ljava/lang/String;)V
+
+    return-void
 
     .line 512
     return-void
 
     .line 482
-    :catch_3b
+    :catch_6d
     move-exception v0
 
     .line 483
@@ -558,7 +618,7 @@
 
     .line 487
     .end local v0           #e:Ljava/lang/Exception;
-    :cond_44
+    :cond_76
     new-instance v1, Landroid/os/Vibrator;
 
     invoke-direct {v1}, Landroid/os/Vibrator;-><init>()V
@@ -567,30 +627,30 @@
     .local v1, vibrator:Landroid/os/Vibrator;
     const-wide/16 v2, 0x1f4
 
-    :try_start_4b
+    :try_start_7d
     invoke-virtual {v1, v2, v3}, Landroid/os/Vibrator;->vibrate(J)V
-    :try_end_4e
-    .catch Ljava/lang/Exception; {:try_start_4b .. :try_end_4e} :catch_56
+    :try_end_80
+    .catch Ljava/lang/Exception; {:try_start_7d .. :try_end_80} :catch_88
 
     .line 497
-    :goto_4e
+    :goto_80
     const-wide/16 v2, 0x1f4
 
-    :try_start_50
+    :try_start_82
     invoke-static {v2, v3}, Ljava/lang/Thread;->sleep(J)V
-    :try_end_53
-    .catch Ljava/lang/InterruptedException; {:try_start_50 .. :try_end_53} :catch_54
+    :try_end_85
+    .catch Ljava/lang/InterruptedException; {:try_start_82 .. :try_end_85} :catch_86
 
     goto :goto_2c
 
     .line 498
-    :catch_54
+    :catch_86
     move-exception v2
 
     goto :goto_2c
 
     .line 490
-    :catch_56
+    :catch_88
     move-exception v0
 
     .line 492
@@ -601,12 +661,12 @@
 
     invoke-static {v4, v2, v0}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    goto :goto_4e
+    goto :goto_80
 
     .line 508
     .end local v0           #e:Ljava/lang/Exception;
     .end local v1           #vibrator:Landroid/os/Vibrator;
-    :cond_5f
+    :cond_91
     const-string v2, "ShutdownThread"
 
     const-string v2, "Performing low-level shutdown..."
